@@ -8,46 +8,46 @@
 
   <script>
 
-  	//Get a random number from the length of the responseJSON
-  	function randomNum(min, max){
-  		return Math.floor(Math.random()*(max - min)) + min;
-  	};
+var power, toughness, creatureName, multiverseID, apiURL, imgURL, chosenCreature, creatureResults, arrLength, creatureArr, tempCreature;
 
-  	//Call the API
-  	$.get 
+//Get a random number between zero and the array length, without decimal points 
+function randomNum(min, max){
+	return Math.floor(Math.random()*(max - min) + min);
+};
 
-	var power;
-	var toughness;
-	var creatureName;
+//Concatenate the URL to use in our AJAX 'get' request by taking the defined power and toughness.
+var searchLink = function(){
+	apiURL = "http://api.mtgdb.info/search?q=power eq " + power + " and toughness eq " + toughness;
+};
 
-	var yourCreatureMessage = 'At ' + power + ' wins and ' + toughness + ' losses, your Creature Score is ' + creatureName + '!'
+//Obtain the image link for the card
+var imageLink = function(){
+	imgURL = "https://api.mtgdb.info/content/hi_res_card__images/" + multiverseID + ".jpg"
+};
 
-	var creatureScoreFetch = function(){
-		this.power = power,
-		this.toughness = toughness,
-		$.ajax({
-			type: "GET",
-			data: "JSON",
-			url: "http://api.mtgdb.info/search/?q=power eq " + power + " and toughness eq " + toughness,
-			success: function(){
-				console.log("Yes!");
+//callback here?
+var getCreatureResults = function(data){
+	creatureResults = $.get(data);
+}
+
+
+//Trying this. Multiple functions that call other functions deeper inside.
+var theCreature = function(){
+	searchLink();
+	var theResult = function(){
+		creatureResults = $.get(apiURL);
+		tempCreature = creatureResults;
+		var theChosen = function(data){
+			creatureArr = data.responseJSON
+			chosenCreature = creatureArr[randomNum(0, creatureArr.length)];
+			var setCreatureInfo = function(){
+				creatureName = chosenCreature.name;
+				multiverseID = chosenCreature.id;
 			}
-		})
+			return setCreatureInfo();
+		}
+		return theChosen(tempCreature);
 	}
-
-	$('#wins').keypress(function(text){
-		if (typeof text === 'number'){
-			power = text;
-		} else {
-			alert('Your input has to be a number!');
-		}
-	})
-
-	$('#losses').keypress(function(text){
-		if (typeof text === 'number'){
-			toughness = text;
-		} else {
-			alert('Your input has to be a number!')
-		}
-	})
+	return theResult(data);
+};
   </script>
