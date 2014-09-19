@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Creature Score</title>
+    <script src="jquery-2.1.1.min.js"></script>
+  </head>
+
+  <script>
+
+  	//Get a random number from the length of the responseJSON
+  	function randomNum(min, max){
+  		return Math.floor(Math.random()*(max - min)) + min;
+  	};
+
+  	//Call the API
+  	$.get 
+
+	var power;
+	var toughness;
+	var creatureName;
+
+	var yourCreatureMessage = 'At ' + power + ' wins and ' + toughness + ' losses, your Creature Score is ' + creatureName + '!'
+
+	var creatureScoreFetch = function(){
+		this.power = power,
+		this.toughness = toughness,
+		$.ajax({
+			type: "GET",
+			data: "JSON",
+			url: "http://api.mtgdb.info/search/?q=power eq " + power + " and toughness eq " + toughness,
+			success: function(){
+				console.log("Yes!");
+			}
+		})
+	}
+
+	$('#wins').keypress(function(text){
+		if (typeof text === 'number'){
+			power = text;
+		} else {
+			alert('Your input has to be a number!');
+		}
+	})
+
+	$('#losses').keypress(function(text){
+		if (typeof text === 'number'){
+			toughness = text;
+		} else {
+			alert('Your input has to be a number!')
+		}
+	})
+  </script>

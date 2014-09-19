@@ -1,0 +1,66 @@
+<!DOCTYPE>
+<html>
+<head>
+	<title>Magic The Gathering</title>
+	<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+	<style type="text/css">
+	h1 { text-align: center; }
+	.input { position: absolute; left: 100px; top: 60px; width: 600px; height: 400px; text-align: center;}
+	.card { position: absolute; left: 720px; top: 60px; width: 400px; height: 400px;}
+	.info { position: absolute; left: 720px; top: 480px; width: 400px; height: 300px; text-align: center;}
+	.another_card { display: block; margin: 0 auto; margin-top: 10px;}
+	div { border: 1px solid gray;}
+	div * { font-size: 25px; }
+	input[type='text'] { width: 100px; border: none; border-bottom: 2px black solid}
+	span { font-size: 50px; margin: 0 10px;}
+	</style>
+ 
+	<script type="text/javascript">
+ 
+	$(function(){
+ 
+		function send(v1,v2) {
+			console.log(v1,v2)
+		}
+ 
+		function Valid_and_Trigger() {
+			var first_number = $('.first_number').val();
+			var second_number = $('.second_number').val()
+			if (!isNaN(first_number) && !isNaN(second_number) && first_number && second_number) { 
+				send(first_number,second_number);
+				$('.another_card').prop("disabled", false)
+				$('.card').css('background','black')
+				$('.info').html('some info here')
+			} else {
+				$('.another_card').prop("disabled", true)
+				$('.card').css('background','white')
+				$('.info').html('')
+			}
+		}
+ 
+		$('.first_number').keyup(function(){
+			Valid_and_Trigger();
+		})
+ 
+		$('.second_number').keyup(function(){
+			Valid_and_Trigger();
+		})
+ 
+ 
+	})
+	</script>
+ 
+</head>
+<body>
+	<h1>Hi! What’s your record?</h1>
+	<div class="input">
+		<input class="first_number" type="text">
+		<span>-</span>
+		<input class="second_number" type="text">
+		<p>Fill this in to find out your Creature Score!</p>
+		<button class="another_card" disabled>Grab me another card</button>
+	</div>
+	<div class="card"></div>
+	<div class="info"></div>
+</body>
+</html>
