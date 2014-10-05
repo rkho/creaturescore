@@ -8,46 +8,42 @@
 
   <script>
 
-var power, toughness, creatureName, multiverseID, apiURL, imgURL, chosenCreature, creatureResults, arrLength, creatureArr, tempCreature;
+//Get a random number between zero and the length of an array without decimal points.
 
-//Get a random number between zero and the array length, without decimal points 
-function randomNum(min, max){
-	return Math.floor(Math.random()*(max - min) + min);
+var randomNum = function(min, max){
+  return Math.floor(Math.random()*(max - min) + min);
 };
 
-//Concatenate the URL to use in our AJAX 'get' request by taking the defined power and toughness.
-var searchLink = function(){
-	apiURL = "http://api.mtgdb.info/search?q=power eq " + power + " and toughness eq " + toughness;
+//Concatenates a URL to utilize in my AJAX 'get' request by taking the defined power and toughness.
+
+var getSearchLink = function(num1, num2){
+  apiLink = "http://api.mtgdb.info/search?q power eq " + num1 + " and toughness eq " + num2;
+  return apiLink;
 };
 
-//Obtain the image link for the card
-var imageLink = function(){
-	imgURL = "https://api.mtgdb.info/content/hi_res_card__images/" + multiverseID + ".jpg"
+//Obtain the image link for the chosen card
+var imageLink = function(multiverseID){
+  imgLink = "https://api.mtgdb.info/content/hi_res_card__images/" + multiverseID + ".jpg";
+  return imgLink;
 };
 
-//callback here?
-var getCreatureResults = function(data){
-	creatureResults = $.get(data);
+//Obtain a random card from an array
+
+var randomCard = function(array){
+  var number = randomNum(0, array.length);
+  return array[number];
+};
+
+//AJAX GET request to determine the array
+
+var obtainListOfResults = function(){
+  $.ajax({
+    url: apiLink,
+    data: JSON,
+    success: function(result){
+      chosenCard = randomCard(result);
+      return chosenCard;
+    }
+  })
 }
-
-
-//Trying this. Multiple functions that call other functions deeper inside.
-var theCreature = function(){
-	searchLink();
-	var theResult = function(){
-		creatureResults = $.get(apiURL);
-		tempCreature = creatureResults;
-		var theChosen = function(data){
-			creatureArr = data.responseJSON
-			chosenCreature = creatureArr[randomNum(0, creatureArr.length)];
-			var setCreatureInfo = function(){
-				creatureName = chosenCreature.name;
-				multiverseID = chosenCreature.id;
-			}
-			return setCreatureInfo();
-		}
-		return theChosen(tempCreature);
-	}
-	return theResult(data);
-};
   </script>
